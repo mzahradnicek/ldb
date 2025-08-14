@@ -1,0 +1,10 @@
+github.com/blockloop/scan/v2 v2.5.0 h1:/yNcCwftYn3wf5BJsJFO9E9P48l45wThdUnM3WcDF+o=
+github.com/blockloop/scan/v2 v2.5.0/go.mod h1:OFYyMocUdRW3DUWehPI/fSsnpNMUNiyUaYXRMY5NMIY=
+github.com/mattn/go-sqlite3 v1.14.31 h1:ldt6ghyPJsokUIlksH63gWZkG6qVGeEAu4zLeS4aVZM=
+github.com/mattn/go-sqlite3 v1.14.31/go.mod h1:Uh1q+B4BYcTPb+yiD3kU8Ct7aC0hY9fxUwlHK0RXw+Y=
+github.com/mzahradnicek/slog-helpers v1.0.0 h1:nmyhCEz4FRBueRd4vVYebQ8QFHoAXCblry8sHA+hOvw=
+github.com/mzahradnicek/slog-helpers v1.0.0/go.mod h1:yip1h/pHeGqZU3tDPCNHcohrOkWJxU0ymxf6Cs6p5vc=
+github.com/mzahradnicek/sql-glue/v2 v2.0.4 h1:8WCCBEKjXcc+ne3BfnVWyPyaPqzjQvL/rgMMwJgGLCc=
+github.com/mzahradnicek/sql-glue/v2 v2.0.4/go.mod h1:BkR23566jp3Lx/ubu/Ihy3Xo9HatKjkEmGSS3CWl1OU=
+golang.org/x/text v0.12.0 h1:k+n5B8goJNdU7hSvEtMUz3d1Q6D/XW4COJSJR6fN0mc=
+golang.org/x/text v0.12.0/go.mod h1:TvPlkZtksWOMsz7fbANvkp4WM8x/WCo/om8BMLbz+aE=
