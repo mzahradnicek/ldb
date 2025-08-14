@@ -4,8 +4,8 @@ type Store struct {
 	conn *Connection
 }
 
-func (o Store) SetConnection() *Connection {
-	return o.conn
+func (o Store) SetConnection(c *Connection) {
+	o.conn = c
 }
 
 func (o Store) Conn() *Connection {
