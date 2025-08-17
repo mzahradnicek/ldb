@@ -101,7 +101,7 @@ func (c *Connection) GlueSelect(ctx context.Context, q *sqlg.Qg, dst interface{}
 	}
 
 	if slices.Contains(opt, OPT_LOG) {
-		slog.Debug("GlueQueryRowScan Query", "slq", sql, "args", args)
+		slog.Debug("GlueSelect Query", "slq", sql, "args", args)
 	}
 
 	return nil
@@ -126,7 +126,7 @@ func (c *Connection) GlueGet(ctx context.Context, q *sqlg.Qg, dst interface{}, o
 	}
 
 	if slices.Contains(opt, OPT_LOG) {
-		slog.Debug("GlueQueryRowScan Query", "slq", sql, "args", args)
+		slog.Debug("GlueGet Query", "slq", sql, "args", args)
 	}
 
 	return nil
