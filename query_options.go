@@ -124,7 +124,7 @@ func (o *QueryOptions) ApplyToQuery(sb *sqlg.Qg) error {
 }
 
 /* Params */
-func (o *QueryOptions) SetParam(name, value string) *QueryOptions {
+func (o *QueryOptions) SetParam(name string, value interface{}) *QueryOptions {
 	o.params[name] = value
 	return o
 }
