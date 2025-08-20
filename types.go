@@ -5,6 +5,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"strings"
 )
 
@@ -131,30 +132,51 @@ func (nt *NullTime) UnmarshalJSON(b []byte) error {
 
 type Json map[string]interface{}
 
-func (b Json) Value() (driver.Value, error) {
-	j, err := json.Marshal(b)
-	if string(j) == "null" {
+func (o Json) Value() (driver.Value, error) {
+	if o == nil {
 		return []byte("{}"), nil
 	}
-	return j, err
+	return json.Marshal(o)
 }
 
-func (b *Json) Scan(src interface{}) error {
-	source, ok := src.([]byte)
-	if !ok {
-		return ErrTypeAssertionArrayByte
+func (o *Json) Scan(value interface{}) error {
+	var bytes []byte
+	switch v := value.(type) {
+	case []byte:
+		bytes = v
+	case string:
+		bytes = []byte(v)
+	case nil:
+		*o = make(map[string]interface{})
+		return nil
+	default:
+		return fmt.Errorf("unsupported type for Json: %T", value)
 	}
 
-	var i interface{}
-	err := json.Unmarshal(source, &i)
-	if err != nil {
-		return err
-	}
+	return json.Unmarshal(bytes, o)
+}
 
-	*b, ok = i.(map[string]interface{})
-	if !ok {
-		return ErrTypeAssertionMapStringInterface
-	}
+type JsonRaw json.RawMessage
 
-	return nil
+func (j *JsonRaw) Scan(value interface{}) error {
+	switch v := value.(type) {
+	case []byte:
+		*j = append((*j)[:0], v...)
+		return nil
+	case string:
+		*j = []byte(v)
+		return nil
+	case nil:
+		*j = nil
+		return nil
+	default:
+		return fmt.Errorf("unsupported type for JSONRaw: %T", value)
+	}
+}
+
+func (j JsonRaw) Value() (driver.Value, error) {
+	if len(j) == 0 {
+		return nil, nil
+	}
+	return []byte(j), nil
 }
