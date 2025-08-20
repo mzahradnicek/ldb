@@ -10,5 +10,7 @@ github.com/mzahradnicek/sql-glue/v2 v2.0.4 h1:8WCCBEKjXcc+ne3BfnVWyPyaPqzjQvL/rg
 github.com/mzahradnicek/sql-glue/v2 v2.0.4/go.mod h1:BkR23566jp3Lx/ubu/Ihy3Xo9HatKjkEmGSS3CWl1OU=
 github.com/mzahradnicek/sql-glue/v2 v2.0.8 h1:Ya01fFu/gg9aGhkHWx2iFbFSL9/pYkTxr07eFq8teVE=
 github.com/mzahradnicek/sql-glue/v2 v2.0.8/go.mod h1:BkR23566jp3Lx/ubu/Ihy3Xo9HatKjkEmGSS3CWl1OU=
+github.com/mzahradnicek/sql-glue/v2 v2.0.9 h1:r9DXe43qg0yzOmrges5tBwPpuR/o3KM69l0gzsBkq9E=
+github.com/mzahradnicek/sql-glue/v2 v2.0.9/go.mod h1:BkR23566jp3Lx/ubu/Ihy3Xo9HatKjkEmGSS3CWl1OU=
 golang.org/x/text v0.12.0 h1:k+n5B8goJNdU7hSvEtMUz3d1Q6D/XW4COJSJR6fN0mc=
 golang.org/x/text v0.12.0/go.mod h1:TvPlkZtksWOMsz7fbANvkp4WM8x/WCo/om8BMLbz+aE=

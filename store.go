@@ -4,7 +4,7 @@ type Store struct {
 	conn *Connection
 }
 
-func (o Store) SetConnection(c *Connection) {
+func (o *Store) SetConnection(c *Connection) {
 	o.conn = c
 }
 
