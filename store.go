@@ -8,7 +8,7 @@ func (o *Store) SetConnection(c *Connection) {
 	o.conn = c
 }
 
-func (o Store) Conn() *Connection {
+func (o *Store) Conn() *Connection {
 	return o.conn
 }
 
