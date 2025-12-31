@@ -14,9 +14,7 @@ var (
 	ErrTypeAssertionMapStringInterface = errors.New("Type assertion .(map[string]interface{}) failed.")
 )
 
-type NullBool struct {
-	sql.NullBool
-}
+type NullBool sql.NullBool
 
 func (nb NullBool) MarshalJSON() ([]byte, error) {
 	if !nb.Valid {
@@ -37,9 +35,7 @@ func (nb *NullBool) UnmarshalJSON(b []byte) error {
 	return err
 }
 
-type NullFloat64 struct {
-	sql.NullFloat64
-}
+type NullFloat64 sql.NullFloat64
 
 func (nf NullFloat64) MarshalJSON() ([]byte, error) {
 	if !nf.Valid {
@@ -60,9 +56,7 @@ func (nf *NullFloat64) UnmarshalJSON(b []byte) error {
 	return err
 }
 
-type NullInt64 struct {
-	sql.NullInt64
-}
+type NullInt64 sql.NullInt64
 
 func (ni NullInt64) MarshalJSON() ([]byte, error) {
 	if !ni.Valid {
@@ -84,9 +78,7 @@ func (ni *NullInt64) UnmarshalJSON(b []byte) error {
 	return err
 }
 
-type NullString struct {
-	sql.NullString
-}
+type NullString sql.NullString
 
 func (ns NullString) MarshalJSON() ([]byte, error) {
 	if !ns.Valid {
@@ -107,9 +99,7 @@ func (ns *NullString) UnmarshalJSON(b []byte) error {
 	return err
 }
 
-type NullTime struct {
-	sql.NullTime
-}
+type NullTime sql.NullTime
 
 func (nt NullTime) MarshalJSON() ([]byte, error) {
 	if !nt.Valid {

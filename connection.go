@@ -62,6 +62,7 @@ func (c *Connection) GlueExec(ctx context.Context, q *sqlg.Qg, opt ...Gopt) (sql
 
 	return ct, err
 }
+
 func (c *Connection) GlueQueryRowScan(ctx context.Context, q *sqlg.Qg, dst []interface{}, opt ...Gopt) error {
 	c.lastUsed = time.Now()
 	sql, args, err := c.sqlg.Glue(q)
