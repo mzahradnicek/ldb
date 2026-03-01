@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 )
 
 var (
@@ -128,6 +129,47 @@ func (nt *NullTime) UnmarshalJSON(b []byte) error {
 	err := json.Unmarshal(b, &nt.Time)
 	nt.Valid = (err == nil)
 	return err
+}
+
+type Date struct {
+	Date  time.Time
+	Valid bool
+}
+
+func (o *Date) Scan(value any) error {
+	if value == nil {
+		o.Date, o.Valid = time.Time{}, false
+		return nil
+	}
+
+	o.Valid = true
+
+	var tmString string
+	switch v := value.(type) {
+	case []byte:
+		tmString = string(v)
+	case string:
+		tmString = v
+	default:
+		return fmt.Errorf("unsupported type for Date: %T", value)
+	}
+
+	res, err := time.Parse(time.DateOnly, tmString)
+	if err != nil {
+		return err
+	}
+
+	o.Date = res
+
+	return nil
+}
+
+func (o Date) Value() (driver.Value, error) {
+	if !o.Valid {
+		return nil, nil
+	}
+
+	return o.Date.Format(time.DateOnly), nil
 }
 
 type Json map[string]interface{}

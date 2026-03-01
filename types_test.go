@@ -281,6 +281,119 @@ func TestNullTime_UnmarshalJSON(t *testing.T) {
 	}
 }
 
+// Test Date type Scan and Value
+func TestDate_Scan(t *testing.T) {
+	tests := []struct {
+		name        string
+		input       interface{}
+		shouldError bool
+		expectedDay string
+		expectedOk  bool
+	}{
+		{"string date", "2024-06-15", false, "2024-06-15", true},
+		{"byte date", []byte("2024-06-15"), false, "2024-06-15", true},
+		{"nil value", nil, false, "0001-01-01", false},
+		{"invalid format", "15/06/2024", true, "", false},
+		{"invalid type", 123, true, "", false},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			var d Date
+			err := d.Scan(tt.input)
+			if tt.shouldError {
+				if err == nil {
+					t.Error("Expected error but got none")
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("Scan failed: %v", err)
+			}
+			if d.Valid != tt.expectedOk {
+				t.Errorf("Expected Valid=%v, got %v", tt.expectedOk, d.Valid)
+			}
+			if d.Valid && d.Date.Format(time.DateOnly) != tt.expectedDay {
+				t.Errorf("Expected date %s, got %s", tt.expectedDay, d.Date.Format(time.DateOnly))
+			}
+		})
+	}
+}
+
+func TestDate_Value(t *testing.T) {
+	tests := []struct {
+		name     string
+		d        Date
+		expected interface{}
+	}{
+		{"valid date", Date{Date: time.Date(2024, 6, 15, 0, 0, 0, 0, time.UTC), Valid: true}, "2024-06-15"},
+		{"invalid date", Date{Valid: false}, nil},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			val, err := tt.d.Value()
+			if err != nil {
+				t.Fatalf("Value() failed: %v", err)
+			}
+			if val != tt.expected {
+				t.Errorf("Expected %v, got %v", tt.expected, val)
+			}
+		})
+	}
+}
+
+func TestDate_DatabaseIntegration(t *testing.T) {
+	db, err := sql.Open("sqlite3", ":memory:")
+	if err != nil {
+		t.Fatalf("Failed to open database: %v", err)
+	}
+	defer db.Close()
+
+	if _, err := db.Exec("CREATE TABLE date_tests (id INTEGER PRIMARY KEY, date_val TEXT)"); err != nil {
+		t.Fatalf("Failed to create table: %v", err)
+	}
+
+	t.Run("insert and read valid date", func(t *testing.T) {
+		d := Date{Date: time.Date(2024, 6, 15, 0, 0, 0, 0, time.UTC), Valid: true}
+		val, _ := d.Value()
+		if _, err := db.Exec("INSERT INTO date_tests VALUES (?, ?)", 1, val); err != nil {
+			t.Fatalf("Insert failed: %v", err)
+		}
+
+		var result Date
+		var raw string
+		if err := db.QueryRow("SELECT date_val FROM date_tests WHERE id = 1").Scan(&raw); err != nil {
+			t.Fatalf("Query failed: %v", err)
+		}
+		if err := result.Scan(raw); err != nil {
+			t.Fatalf("Scan failed: %v", err)
+		}
+		if !result.Valid {
+			t.Error("Expected Valid=true")
+		}
+		if result.Date.Format(time.DateOnly) != "2024-06-15" {
+			t.Errorf("Expected 2024-06-15, got %s", result.Date.Format(time.DateOnly))
+		}
+	})
+
+	t.Run("insert and read null date", func(t *testing.T) {
+		d := Date{Valid: false}
+		val, _ := d.Value()
+		if _, err := db.Exec("INSERT INTO date_tests VALUES (?, ?)", 2, val); err != nil {
+			t.Fatalf("Insert failed: %v", err)
+		}
+
+		var raw *string
+		if err := db.QueryRow("SELECT date_val FROM date_tests WHERE id = 2").Scan(&raw); err != nil {
+			t.Fatalf("Query failed: %v", err)
+		}
+		if raw != nil {
+			t.Error("Expected NULL from database")
+		}
+	})
+}
+
 // Test Json type Scan and Value
 func TestJson_Value(t *testing.T) {
 	tests := []struct {
